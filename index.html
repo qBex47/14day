@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Love 💖</title>
+
+<style>
+:root{
+  --pad: 20px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  height: 100svh;           /* краще для мобілок */
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  font-family: 'Segoe UI', sans-serif;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+           env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+.container {
+  text-align: center;
+  transform: translateY(-80px); /* щоб кнопки не лізли на текст */
+  padding: 0 16px;
+}
+
+.gif {
+  display: block;
+  width: min(260px, 70vw);
+  height: auto;
+  margin: 0 auto 18px auto;
+  border-radius: 14px;
+  box-shadow: 0 14px 30px rgba(0,0,0,0.25);
+}
+
+h1 {
+  font-size: clamp(1.7rem, 5vw, 2.6rem);
+  line-height: 1.15;
+  color: #fff;
+  margin: 0;
+  text-shadow: 0 6px 18px rgba(0,0,0,0.18);
+}
+
+.btn {
+  padding: 14px 28px;
+  font-size: 18px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+  position: absolute;
+  z-index: 5;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.yes {
+  background: #ff4d6d;
+  color: white;
+}
+
+.no {
+  background: white;
+  color: #ff4d6d;
+}
+
+.btn:hover {
+  transform: scale(1.05);
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
+
+/* Мобільна оптимізація */
+@media (max-width: 480px) {
+  :root { --pad: 14px; }
+
+  .container {
+    transform: translateY(-60px);
+  }
+
+  .gif {
+    width: min(220px, 78vw);
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-size: clamp(1.35rem, 6vw, 2rem);
+  }
+
+  .btn {
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 12px;
+  }
+}
+
+/* На touch-пристроях hover часто “липне” — відключимо hover ефект */
+@media (hover: none) {
+  .btn:hover { transform: none; }
+}
+</style>
+</head>
+
+<body>
+  <div class="container">
+    <img class="gif" src="minion-minion-loves.gif" alt="minion loves" />
+    <h1>Будешь моей валентинкой? 💖</h1>
+  </div>
+
+  <button id="yesBtn" class="btn yes">Да 💘</button>
+  <button id="noBtn" class="btn no">Нет 🙈</button>
+
+<script>
+const yesBtn = document.getElementById("yesBtn");
+const noBtn  = document.getElementById("noBtn");
+
+function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
+
+function placeInitialButtons() {
+  // Ставимо кнопки трохи нижче центру, але не під гіфку/текст
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+
+  yesBtn.style.left = (w * 0.35) + "px";
+  yesBtn.style.top  = (h * 0.60) + "px";
+
+  noBtn.style.left  = (w * 0.60) + "px";
+  noBtn.style.top   = (h * 0.60) + "px";
+}
+
+placeInitialButtons();
+window.addEventListener("resize", placeInitialButtons);
+
+yesBtn.onclick = () => {
+  window.location.href = "love18/index.html";
+};
+
+// Функція втечі (з урахуванням safe padding)
+function moveButton() {
+  const padding = 20;
+
+  const maxX = window.innerWidth  - noBtn.offsetWidth  - padding;
+  const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+
+  noBtn.style.left = x + "px";
+  noBtn.style.top  = y + "px";
+}
+
+// Desktop: тікає при наведенні
+noBtn.addEventListener("mouseenter", moveButton);
+
+// Mobile + desktop: тікає при натисканні
+noBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  moveButton();
+});
+
+// Mobile: щоб тікала ще до кліку (коли палець торкається)
+noBtn.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  moveButton();
+}, { passive: false });
+</script>
+</body>
+</html>
